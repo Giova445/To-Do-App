@@ -9,43 +9,72 @@ import { AppUI } from "./AppUI";
 //  ]
 
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  let parsedItem;
+  // Creamos el estado inicial para nuestros errores y carga
+  const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [item, setItem] = React.useState(initialValue);
+  
+  React.useEffect(() => {
+  // Simulamos un segundo de delay de carga 
+    setTimeout(() => {
+      // Manejamos la tarea dentro de un try/catch por si ocurre algún error
+      try {
+        const localStorageItem = localStorage.getItem(itemName);
+        let parsedItem;
+        
+        if (!localStorageItem) {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = initialValue;
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
 
-  // Utilizamos la lógica que teníamos, pero ahora con las variables y parámentros nuevos
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
-
-  const[item, setItem] = React.useState(parsedItem);
-
-  // Actualizamos la función para guardar nuestro item con las nuevas variables y parámetros
+        setItem(parsedItem);
+      } catch(error) {
+      // En caso de un error lo guardamos en el estado
+        setError(error);
+      } finally {
+        // También podemos utilizar la última parte del try/cath (finally) para terminar la carga
+        setLoading(false);
+      }
+    }, 1000);
+  });
+  
   const saveItem = (newItem) => {
-    const stringifiedItem = JSON.stringify(newItem);
-    localStorage.setItem(itemName, stringifiedItem);
-    setItem(newItem);
+    // Manejamos la tarea dentro de un try/catch por si ocurre algún error
+    try {
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedItem);
+      setItem(newItem);
+    } catch(error) {
+      // En caso de algún error lo guardamos en el estado
+      setError(error);
+    }
   };
 
-  // Regresamos los datos que necesitamos
-  return [
+  // Para tener un mejor control de los datos retornados, podemos regresarlos dentro de un objeto
+  return {
     item,
     saveItem,
-  ];
+    loading,
+    error,
+  };
 }
 
 
 function App() {
   
-  const[todos, saveTodos] = useLocalStorage('TODOS_v1', []);
+  const{
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage('TODOS_v1', []);
   const [searchValue, setSearchValue] = React.useState('');
 
   const completedTodos = todos.filter(todo => todo.completed).length
   const totalTodos = todos.length;
 
-  let searchedTodos = [];
   
   const filterTodos = todos.filter((todo) => (
     todo.text.toLowerCase().includes(searchValue.toLowerCase())
@@ -91,8 +120,11 @@ function App() {
     ));
   };
 
+
+
   return (
     <AppUI
+      loading={loading}
       totalTodos={totalTodos}
       completedTodos={completedTodos}
       searchValue={searchValue}
