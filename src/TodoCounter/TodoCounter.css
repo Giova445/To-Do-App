@@ -1,4 +1,14 @@
+.todocounter--container {
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
 .todocounter {
-    font-size: 1.3rem;
+    font-size: 3.3rem;
     text-align: center;
+
 }

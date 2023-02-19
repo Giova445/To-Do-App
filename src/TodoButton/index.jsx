@@ -1,16 +1,15 @@
 import React from 'react'
 import './TodoButton.css';
+import { TodoContext } from '../TodoContext';
 
-function TodoButton() {
-
-const onClickButton = () => {
-  alert('aqui se deberia abrir el modal')
-};
+const TodoButton = () => {
+  const { setOpenModal } = React.useContext(TodoContext);
+  const onClick = () => setOpenModal(prevState => !prevState);
 
   return (
     <button 
     className='todobutton'
-    onClick={onClickButton}
+    onClick={onClick}
     >+
     </button>
   )

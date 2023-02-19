@@ -5,6 +5,11 @@ import { TodoSearch } from "../TodoSearch";
 import { TodoList } from "../TodoList";
 import { TodoItem } from "../TodoItem";
 import { TodoButton } from "../TodoButton";
+import { Modal } from "../Modal";
+import { TodoForm } from "../TodoForm";
+import { TodosError } from "../TodosError";
+import { TodosLoading } from "../TodosLoading";
+import { EmptyTodos } from "../EmptyTodos";
 import "./App.css"
 
 function AppUI() {
@@ -14,6 +19,8 @@ function AppUI() {
             filterTodos,
             toggleCompleteTodo,
             deleteTodo,
+            openModal,
+            setOpenModal,
         } = React.useContext(TodoContext);
     return (
         <React.Fragment>
@@ -21,9 +28,9 @@ function AppUI() {
             <TodoSearch />
 
             <TodoList>
-                {error && <p>hubo un error</p>}
-                {loading && <p>estamos cargando no te desesperes</p>}
-                {(!loading && !filterTodos.length) && <p>crea tu primer To Do</p>}
+                {error && <TodosError error={error}/>}
+                {loading && <TodosLoading />}
+                {(!loading && !filterTodos.length) && <EmptyTodos/>}
                 {filterTodos.map(todo=> (
                 <TodoItem
                      key={todo.text}
@@ -34,7 +41,13 @@ function AppUI() {
                      />
                     ))};
             </TodoList>
-            <TodoButton />
+            {!!openModal && (
+                <Modal>
+                    < TodoForm />
+                    {/* <p>{filterTodos[0]?.text}</p> */}
+                </Modal>
+            )}
+            <TodoButton  setOpenModal={setOpenModal} openModal={openModal}/>
         </React.Fragment>
     );
 }
