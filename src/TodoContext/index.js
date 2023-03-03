@@ -1,7 +1,5 @@
 import React from "react";
 import { useLocalStorage } from "./useLocalStorage"
-import { lightTheme, darkTheme } from "../TodoDarkMode/theme";
-
 // Al crear el contexto también podemos pasarle un valor inicial entre los paréntesis
 
 const TodoContext = React.createContext();
@@ -16,11 +14,6 @@ function TodoProvider(props) {
       } = useLocalStorage('TODOS_v1', []);
       const [searchValue, setSearchValue] = React.useState('');
       const [openModal, setOpenModal] = React.useState(false);
-      // const [theme, setTheme] = React.useState('light');
-
-      const [theme, setTheme] = React.useState('light');
-      const lele = document.getElementById("root");
-      lele.className=`${theme}`
       const completedTodos = todos.filter(todo => todo.completed).length
       const totalTodos = todos.length;
     
@@ -80,7 +73,7 @@ function TodoProvider(props) {
     
      // Retornamos nuestro proveedor con nuestro contexto en la etiqueta value, que recibirá a toda nuestra aplicación, por eso necesitamos la prop children
     return (
-        <TodoContext.Provider theme={theme === 'light' ? lightTheme : darkTheme} value={{
+        <TodoContext.Provider value={{
             error ,
             loading,
             totalTodos,
@@ -93,8 +86,6 @@ function TodoProvider(props) {
             deleteTodo,
             openModal,
             setOpenModal,
-            theme,
-            setTheme,
         }}>
             {props.children}
         </TodoContext.Provider>

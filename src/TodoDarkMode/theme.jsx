@@ -9,13 +9,13 @@ if (localStorage.getItem('theme')) {
     setTheme('theme-dark');
   } else if (localStorage.getItem('theme') === 'theme-light') {
     setTheme('theme-light')
-  }
-} else {
-  setTheme('theme-dark')
-}
+    }
+  } else {
+      setTheme('theme-dark')
+    }
 }
 
 module.exports = {
-setTheme,
-keepTheme
+  setTheme,
+  keepTheme
 }

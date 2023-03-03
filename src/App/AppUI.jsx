@@ -10,7 +10,8 @@ import { TodoForm } from "../TodoForm";
 import { TodosError } from "../TodosError";
 import { TodosLoading } from "../TodosLoading";
 import { EmptyTodos } from "../EmptyTodos";
-import { TodoDarkMode, Toggle } from "../TodoDarkMode";
+import { Toggle } from "../TodoDarkMode";
+import {  keepTheme } from "../TodoDarkMode/theme";
 import "./App.css"
 
 function AppUI() {
@@ -22,8 +23,6 @@ function AppUI() {
             deleteTodo,
             openModal,
             setOpenModal,
-            theme,
-            setTheme,
         } = React.useContext(TodoContext);
     return (
         <React.Fragment>
@@ -42,7 +41,7 @@ function AppUI() {
                     onComplete={() => toggleCompleteTodo(todo.text)}
                     onDelete={() => deleteTodo(todo.text)}
                      />
-                    ))};
+                    ))}
             </TodoList>
             {!!openModal && (
                 <Modal>
@@ -51,8 +50,8 @@ function AppUI() {
                 </Modal>
             )}
             <TodoButton  setOpenModal={setOpenModal} openModal={openModal}/>
-            {/* <TodoDarkMode setTheme={setTheme} theme={theme}></TodoDarkMode> */}
-            <Toggle></Toggle>
+            
+            <Toggle keepTheme={keepTheme} Toggle={Toggle}></Toggle>
         </React.Fragment>
     );
 }

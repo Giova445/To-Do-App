@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import { TodoContext } from '../TodoContext';
+import React, { useEffect, useState } from "react";
 import "./TodoDarkMode.css";
 import { setTheme } from "./theme";
 
 function Toggle() {
-    const [togClass, setTogClass] = React.useState('dark');
+    const [togClass, setTogClass] = useState('dark');
     let theme = localStorage.getItem('theme');
 
     const handleOnClick = () => {

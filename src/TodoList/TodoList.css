@@ -3,6 +3,12 @@ ul {
     list-style: none;
     margin: 0;
 }
+.todolist--container {
+    padding: 10px 25px;
+}
+.todolist--container h3 {
+    font-size: 1.6rem;
+}
 li {
     padding: 20px 0;
 }
